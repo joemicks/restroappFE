@@ -1,0 +1,48 @@
+.logo-img {
+    width: 30px;
+    height: 30px;
+  }
+  
+  .logo-img-small{
+    width: 20px;
+    height: 20px;
+  }
+  .search-icon {
+    font-size: 20px;
+    cursor: pointer;
+    color: #555;
+  }
+  .responsive-text {
+    font-size: clamp(1rem, 5vw, 3rem);
+  }
+  .radio-group {
+    display: flex;
+    justify-content: flex-end;
+}
+.small-card {
+    height: 100px; /* Fixed height to ensure uniform size */
+    border-radius: 8px;
+    transition: 0.3s;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .small-card:hover {
+    transform: scale(1.05);
+    background: #f8f9fa;
+  }
+  .small-text {
+    font-size: 12px;
+    font-weight: bold;
+    width: 100px; /* Ensures text width is consistent */
+    text-align: center;
+    
+  }
+  .text-truncate {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100px; /* Keeps text within bounds */
+  }
+  
