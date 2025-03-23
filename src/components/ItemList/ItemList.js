@@ -44,7 +44,7 @@ const ItemList = () => {
     setItems((prevItems) =>
       prevItems.map((item) =>
         item.id === id && item.count > 0
-          ? { ...item, count: item.count - 1, totalPrice: (item.count - 1) * item.calcprice }
+          ? { ...item, count: item.count - 1, totalPrice: (item.count - 1) * item.calcprice,price:item.totalPrice }
           : item
       )
     );
