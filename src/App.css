@@ -6,5 +6,6 @@ body {
   background-attachment: fixed; /* Prevents scrolling effect */
   height: 100vh;
   margin: 0;
+  overflow: hidden;
 }
 

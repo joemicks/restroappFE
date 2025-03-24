@@ -26,7 +26,7 @@ const ItemList = () => {
     setTotalItems(totalAmount);
     localStorage.setItem("cartItems", JSON.stringify(items));
     return () => {
-      localStorage.removeItem("cartItems");
+      //localStorage.removeItem("cartItems");
     }
   }, [items])
   const handleIncrement = (id) => {
