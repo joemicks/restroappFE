@@ -7,32 +7,29 @@ import ItemList from "../ItemList/ItemList";
 import { useNavigate } from "react-router-dom";
 import CommonHeader from "../CommonHeader/CommonHeader";
 const categories = [
-  { id: 1, name: "Veg Startes", icon: <MdFoodBank size={35} color="orange" /> },
-  { id: 2, name: "Non Veg Startes", icon: <MdFoodBank size={35} color="orange" /> },
-  { id: 3, name: "Veg Gravies", icon: <MdFoodBank size={35} color="orange" /> },
-  { id: 4, name: "Non Veg Gravies", icon: <MdFoodBank size={35} color="orange" /> },
-  { id: 5, name: "Parota", icon: <MdFoodBank size={35} color="orange" /> },
-  { id: 6, name: "Veg Briyani", icon: <MdFoodBank size={35} color="orange" /> },
-  { id: 7, name: "Non Veg Briyani", icon: <MdFoodBank size={35} color="orange" /> },
-  { id: 8, name: "Veg Chinese", icon: <MdFoodBank size={35} color="orange" /> },
-  { id: 9, name: "Non Veg Rolls", icon: <MdFoodBank size={35} color="orange" /> },
-  { id: 10, name: "Non Veg Chicken Briyani", icon: <MdFoodBank size={35} color="orange" /> },
-  { id: 11, name: "Veg Pulakh", icon: <MdFoodBank size={35} color="orange" /> },
-  { id: 12, name: "Non Veg Manjurian", icon: <MdFoodBank size={35} color="orange" /> },
+  { id: 1, name: "Veg Startes",category:"veg_starters", icon: <MdFoodBank size={35} color="orange" /> },
+  { id: 2, name: "Non Veg Startes",category:"non_veg_starters", icon: <MdFoodBank size={35} color="orange" /> },
+  { id: 3, name: "Veg Gravies",category:"veg_gravy", icon: <MdFoodBank size={35} color="orange"  /> },
+  { id: 4, name: "Non Veg Gravies", category:"non_veg_gravy", icon: <MdFoodBank size={35} color="orange" /> },
+  { id: 5, name: "Parota", category:"veg_parota", icon: <MdFoodBank size={35} color="orange"/> },
+  { id: 6, name: "Non Veg Parota", category:"non_veg_parota", icon: <MdFoodBank size={35} color="orange"/> },
+  { id: 7, name: "Veg Briyani", category:"veg_biriyani", icon: <MdFoodBank size={35} color="orange" /> },
+  { id: 8, name: "Non Veg Briyani",category:"non_veg_biriyani", icon: <MdFoodBank size={35} color="orange" /> },
+  { id: 9, name: "Veg Rolls",category:"veg_roll", icon: <MdFoodBank size={35} color="orange" /> },
+  { id: 10, name: "Non Veg Manjurian", category:"non_veg_manjurian", icon: <MdFoodBank size={35} color="orange" /> },
 
 ];
 const CategoriesPage = () => {
   const location = useLocation();
   console.log(location, "status 009")
   const message = location.state?.message || "No message received";
-  const [listClick, setListClick] = useState(false);
-  const [listItem, setListItem] = useState([]);
   const navigate = useNavigate();
   const handleClick = (item) =>{
     let state = {
       itemId : item.id,
       itemName:item.name,
-      message: message
+      message: message,
+      category: item.category
     }
    debugger;
     navigate(`/itemview/${item.id}`,{state:state});

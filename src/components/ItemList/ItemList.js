@@ -6,45 +6,118 @@ import { FaArrowLeft } from "react-icons/fa";
 import { MdFoodBank } from "react-icons/md";
 const ItemList = () => {
   const location = useLocation();
-  const [totalItem, setTotalItems] = useState(0);
-  const [items, setItems] = useState(() => {
-    const savedItems = localStorage.getItem("cartItems");
-    return savedItems
-      ? JSON.parse(savedItems)
-      : [
-        { id: 1, name: "Wheat Parota", totalPrice: 0, price: "29", calcprice: "29", type: "veg", color: "green", count: 0 },
-        { id: 2, name: "Chicken Parota", totalPrice: 0, price: "119", calcprice: "119", type: "non-veg", color: "red", count: 0 },
-        { id: 3, name: "Egg Parota", totalPrice: 0, price: "79", calcprice: "79", type: "egg", color: "green", count: 0 },
-        { id: 4, name: "Ceylon Parota", totalPrice: 0, price: "30", calcprice: "30", type: "veg", color: "green", count: 0 },
-        { id: 5, name: "Coin Parota", totalPrice: 0, price: "19", calcprice: "19", type: "veg", color: "green", count: 0 },
-        { id: 6, name: "Parota", totalPrice: 0, price: "20", calcprice: "20", type: "veg", color: "green", count: 0 }
+  const [totalcartlist, setTotalCartList] = useState(0);
+  const [totaAmountCalc, settotaAmountCalc] = useState(0);
+  const foodItems = [
+    { id: 1, name: "Wheat Parota", totalPrice: 0, price: "29", calcprice: "29", type: "veg", color: "green", count: 0, category: "veg_parota" },
+    { id: 2, name: "Chicken Parota", totalPrice: 0, price: "119", calcprice: "119", type: "non-veg", color: "red", count: 0, category: "non_veg_parota" },
+    { id: 3, name: "Egg Parota", totalPrice: 0, price: "79", calcprice: "79", type: "egg", color: "red", count: 0, category: "non_veg_parota" },
+    { id: 4, name: "Ceylon Parota", totalPrice: 0, price: "30", calcprice: "30", type: "veg", color: "red", count: 0, category: "veg_parota" },
+    { id: 5, name: "Coin Parota", totalPrice: 0, price: "19", calcprice: "19", type: "veg", color: "green", count: 0, category: "veg_parota" },
+    { id: 6, name: "Parota", totalPrice: 0, price: "20", calcprice: "20", type: "veg", color: "green", count: 0, category: "veg_parota" },
+    { id: 7, name: "panner biriyani", totalPrice: 0, price: "179", calcprice: "179", type: "veg", color: "green", count: 0, category: "veg_biriyani" },
+    { id: 8, name: "mushroom biriyani", totalPrice: 0, price: "159", calcprice: "159", type: "non-veg", color: "red", count: 0, category: "veg_biriyani" },
+    { id: 9, name: "chicken biriyani", totalPrice: 0, price: "179", calcprice: "179", type: "egg", color: "red", count: 0, category: "non_veg_biriyani" },
+    { id: 10, name: "mutton biriyani", totalPrice: 0, price: "200", calcprice: "200", type: "veg", color: "red", count: 0, category: "non_veg_biriyani" },
+    { id: 11, name: "chicken manjurian", totalPrice: 0, price: "169", calcprice: "169", type: "veg", color: "red", count: 0, category: "non_veg_manjurian" },
+    { id: 12, name: "honey chicken", totalPrice: 0, price: "140", calcprice: "140", type: "veg", color: "red", count: 0, category: "non_veg_starters" },
+    { id: 13, name: "chicken 65", totalPrice: 0, price: "199", calcprice: "199", type: "veg", color: "red", count: 0, category: "non_veg_starters" },
+    { id: 14, name: "broasted chicken", totalPrice: 0, price: "119", calcprice: "119", type: "non-veg", color: "red", count: 0, category: "non_veg_starters" },
+    { id: 15, name: "mushroom fry dry", totalPrice: 0, price: "179", calcprice: "179", type: "egg", color: "green", count: 0, category: "veg_starters" },
+    { id: 16, name: "panner pepper fry", totalPrice: 0, price: "130", calcprice: "130", type: "veg", color: "green", count: 0, category: "veg_starters" },
+    { id: 17, name: "chicken pepper fry", totalPrice: 0, price: "189", calcprice: "189", type: "veg", color: "red", count: 0, category: "non_veg_starters" },
+    { id: 18, name: "veg_parota", totalPrice: 0, price: "20", calcprice: "20", type: "veg", color: "green", count: 0, category: "veg_parota" },
+    { id: 19, name: "veg curry with panner", totalPrice: 0, price: "119", calcprice: "119", type: "non-veg", color: "red", count: 0, category: "veg_gravy" },
+    { id: 20, name: "veg curry with mushroom", totalPrice: 0, price: "79", calcprice: "79", type: "egg", color: "green", count: 0, category: "veg_gravy" },
+    { id: 21, name: "non veg curry with mutton", totalPrice: 0, price: "79", calcprice: "79", type: "veg", color: "red", count: 0, category: "non_veg_gravy" },
+    { id: 22, name: "non veg curry with chicken ", totalPrice: 0, price: "79", calcprice: "79", type: "veg", color: "red", count: 0, category: "non_veg_gravy" },
+    { id: 23, name: "veg roll with addon masala", totalPrice: 0, price: "20", calcprice: "20", type: "veg", color: "green", count: 0, category: "veg_roll" }
+  ];
 
-      ];
-  });
+  // Implementations for calclautions and store in localstorage
+  const { category } = location.state;
+  // Function to get stored cart items per category
+  const getStoredItems = () => {
+    const storedCart = localStorage.getItem(`cartItems_${category}`);
+    // If there are stored items, return them; otherwise, filter by category
+    return storedCart ? JSON.parse(storedCart) : foodItems.filter((item) => item.category === category);
+  };
+  const [items, setItems] = useState(getStoredItems());
+  // Update localStorage when items change
   useEffect(() => {
-    const totalAmount = items.map(item => item.totalPrice).reduce((acc, price) => acc + price, 0);
-    setTotalItems(totalAmount);
-    localStorage.setItem("cartItems", JSON.stringify(items));
+    localStorage.setItem(`cartItems_${category}`, JSON.stringify(items));
+
+  }, [items, category]);
+
+  useEffect(() => {
+    setItems(getStoredItems());
+  }, [category]);
+
+  useEffect(() => {
+    // impleemnt of lcoatostroage to persist on back to litem lsits on click of inc and dec
+    let totalAmount = 0;
+    let totalSumCount = 0;
+    Object.keys(localStorage).forEach((key) => {
+      // Check if key starts with "cartItems_"
+      if (key.startsWith("cartItems_")) {
+        const cartData = JSON.parse(localStorage.getItem(key)) || [];
+        // Sum up totalPrice from each category
+        totalAmount += cartData
+          .map(item => item.totalPrice || 0) // Extract totalPrice
+          .reduce((acc, price) => acc + price, 0); // Sum up all prices
+        settotaAmountCalc(totalAmount);
+        // Sum up count    
+        totalSumCount += cartData.reduce((sum, item) => sum + item.count, 0);
+        setTotalCartList(totalSumCount);
+      }
+    });
     return () => {
-      //localStorage.removeItem("cartItems");
+      //  localStorage.removeItem("cartItems");
     }
   }, [items])
-  const handleIncrement = (id) => {
 
+  //End here...
+
+  useEffect(() => {
+
+    // on load time fetch persist details frm local
+    let totalAmount = 0;
+    let totalSumCount = 0;
+    // Get all keys from localStorage
+    Object.keys(localStorage).forEach((key) => {
+
+      // Check if key starts with "cartItems_"
+      if (key.startsWith("cartItems_")) {
+        const cartData = JSON.parse(localStorage.getItem(key)) || [];
+        // Sum up totalPrice from each category
+        totalAmount += cartData
+          .map(item => item.totalPrice || 0) // Extract totalPrice
+          .reduce((acc, price) => acc + price, 0); // Sum up all prices
+        settotaAmountCalc(totalAmount);
+        totalSumCount += cartData.reduce((sum, item) => sum + item.count, 0);
+        setTotalCartList(totalSumCount);
+      }
+    });
+
+  }, [])
+
+  const handleIncrement = (id) => {
     setItems((prevItems) =>
       prevItems.map((item) =>
         item.id === id
           ? { ...item, count: item.count + 1, totalPrice: (item.count + 1) * item.calcprice, price: 0 }
           : item
       )
-
     );
+
   };
-  const handleDecrement = (id) => {
+  const handleDecrement = (e, id) => {
+    e.preventDefault();
+
     setItems((prevItems) =>
       prevItems.map((item) =>
         item.id === id && item.count > 0
-          ? { ...item, count: item.count - 1, totalPrice: (item.count - 1) * item.calcprice,price:item.totalPrice }
+          ? { ...item, count: item.count - 1, totalPrice: (item.count - 1) * item.calcprice, price: item.totalPrice }
           : item
       )
     );
@@ -79,7 +152,7 @@ const ItemList = () => {
                     </div>
                   </div>
                   <div className="d-flex align-items-center">
-                    <h6 className="mb-0 me-3">₹{item.price || item.totalPrice}</h6>
+                    <h6 className="mb-0 me-3">₹{item.count > 0 ? item.totalPrice : item.calcprice}</h6>
                     {item.count === 0 ? (
                       <Button variant="outline-danger" size="sm"
                         onClick={() => handleIncrement(item.id)}
@@ -91,7 +164,7 @@ const ItemList = () => {
                         <Button
                           variant="outline-danger"
                           className="fw-bold px-2 py-1 border-0"
-                          onClick={() => handleDecrement(item.id)}
+                          onClick={(e) => handleDecrement(e, item.id)}
                         >
                           -
                         </Button>
@@ -119,16 +192,16 @@ const ItemList = () => {
           </Button>
         </div>
         {/* Floating Cart Button */}
-        {totalItems > 0 ? (
+        {(totaAmountCalc > 0 || totalItems > 0) ? (
           <div className="position-fixed bottom-0 start-0 w-100 p-3 shadow d-flex justify-content-between align-items-center" style={{ backgroundColor: 'orange', color: 'black', fontWeight: 'bold' }}>
             {/* Left Side - Total Price & Info */}
             <div className="d-flex flex-column">
-              <span className="fw-bold">₹ {totalItem}</span>
+              <span className="fw-bold">₹ {totaAmountCalc}</span>
               <small>Extra charges may apply</small>
             </div>
             {/* Right Side - Cart Items & View Order Button */}
             <div className="d-flex flex-column align-items-center">
-              <span className="me-2">{totalItems} Item in cart</span>
+              <span className="me-2">{totalcartlist ? totalcartlist + " " + "Item in cart" : 0}</span>
               <button className="btn btn-light fw-bold">View Order</button>
             </div>
           </div>
